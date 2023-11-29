@@ -5,11 +5,10 @@ namespace Services.EventSystem.Extension
 {
     public enum EventTypes
     {
-        OnScreenTapped,
-        OnUserMoveInputChanged,
-        OnUserJumpClickStarted,
-        OnUserJumpClickCanceled,
-        OnLineDrawn
+        None,
+        OnUserClickedForward,
+        OnUserClickedSides,
+        OnUserShot,
     }
 
     public static class EventServiceExtension

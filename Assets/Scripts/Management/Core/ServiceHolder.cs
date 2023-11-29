@@ -1,3 +1,4 @@
+using Management.UserInput;
 using Microsoft.Extensions.DependencyInjection;
 using Services.CoroutineSystem.Abstractio;
 using Services.CoroutineSystem.Core;
@@ -32,6 +33,11 @@ namespace Management.Core
                 }
                 return _serviceProvider;
             }
+        }
+
+        public static void Dispose()
+        {
+            _serviceProvider = null;
         }
     }
 }
