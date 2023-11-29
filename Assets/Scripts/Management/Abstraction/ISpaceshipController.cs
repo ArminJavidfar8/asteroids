@@ -1,6 +1,3 @@
-using Services.Abstraction.Data.Spaceship;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace Management.Abstraction

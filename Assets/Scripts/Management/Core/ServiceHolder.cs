@@ -1,11 +1,14 @@
-using Management.UserInput;
 using Microsoft.Extensions.DependencyInjection;
+using Services.Abstraction;
+using Services.Core;
 using Services.CoroutineSystem.Abstractio;
 using Services.CoroutineSystem.Core;
 using Services.EventSystem.Abstraction;
 using Services.EventSystem.Core;
 using Services.PoolSystem.Abstaction;
 using Services.PoolSystem.Core;
+using Services.SpriteDatabaseSystem.Abstraction;
+using Services.SpriteDatabaseSystem.Core;
 using System;
 
 namespace Management.Core
@@ -23,6 +26,8 @@ namespace Management.Core
                     serviceCollection.AddSingleton<IPoolService, PoolService>();
                     serviceCollection.AddSingleton<IEventService, EventService>();
                     serviceCollection.AddSingleton<ICoroutineService, CoroutineService>();
+                    serviceCollection.AddSingleton<IAsteroidsService, AsteroidsService>();
+                    serviceCollection.AddSingleton<ISpriteDatabaseService, SpriteDatabaseService>();
 
                     _serviceProvider = serviceCollection.BuildServiceProvider();
 
@@ -30,6 +35,8 @@ namespace Management.Core
                     _ = _serviceProvider.GetService<IPoolService>();
                     _ = _serviceProvider.GetService<IEventService>();
                     _ = _serviceProvider.GetService<ICoroutineService>();
+                    _ = _serviceProvider.GetService<IAsteroidsService>();
+                    _ = _serviceProvider.GetService<ISpriteDatabaseService>();
                 }
                 return _serviceProvider;
             }
