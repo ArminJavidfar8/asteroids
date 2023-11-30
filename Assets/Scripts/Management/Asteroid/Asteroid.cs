@@ -24,6 +24,7 @@ namespace Management.Asteroid
         public string Name => _asteroidData.AsteroidType.ToString();
         public IAsteroidData AsteroidData => _asteroidData;
         public GameObject TheGameObject => gameObject;
+        public Vector3 Position => _transform.position;
 
         public void Initialize()
         {

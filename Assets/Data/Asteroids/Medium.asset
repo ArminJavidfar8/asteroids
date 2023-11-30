@@ -13,5 +13,6 @@ MonoBehaviour:
   m_Name: Medium
   m_EditorClassIdentifier: 
   _asteroidType: 2
+  _moveForce: 14
   _maxHealth: 20
   _breakDownScore: 50

@@ -9,6 +9,7 @@ namespace Management.Abstraction
     {
         IAsteroidData AsteroidData { get; }
         GameObject TheGameObject { get; }
+        Vector3 Position { get; }
 
         void MoveProperly();
         void BreakDown();
