@@ -18,6 +18,17 @@ namespace Tests.EditMode.UnitTest
 
             Assert.IsNotNull(smallAsteroid);
         }
+        
+        [Test]
+        public void TestRandomAsteroid()
+        {
+            IAsteroidsService asteroidsService = ServiceHolder.ServiceProvider.GetService<IAsteroidsService>();
+            for (int i = 0; i < 50; i++)
+            {
+                AsteroidType randomType = asteroidsService.GetRandomAsteroidType();
+                Assert.AreNotEqual(randomType, AsteroidType.None);
+            }
+        }
 
         [TearDown]
         public void Cleanup()

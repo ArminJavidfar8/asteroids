@@ -1,3 +1,4 @@
+using Management.AI;
 using Microsoft.Extensions.DependencyInjection;
 using Services.Abstraction;
 using Services.Core;
@@ -28,6 +29,8 @@ namespace Management.Core
                     serviceCollection.AddSingleton<ICoroutineService, CoroutineService>();
                     serviceCollection.AddSingleton<IAsteroidsService, AsteroidsService>();
                     serviceCollection.AddSingleton<ISpriteDatabaseService, SpriteDatabaseService>();
+                    serviceCollection.AddSingleton<ILevelService, LevelService>();
+                    serviceCollection.AddSingleton<EnemyManager>();
 
                     _serviceProvider = serviceCollection.BuildServiceProvider();
 
@@ -37,6 +40,8 @@ namespace Management.Core
                     _ = _serviceProvider.GetService<ICoroutineService>();
                     _ = _serviceProvider.GetService<IAsteroidsService>();
                     _ = _serviceProvider.GetService<ISpriteDatabaseService>();
+                    _ = _serviceProvider.GetService<ILevelService>();
+                    _ = _serviceProvider.GetService<EnemyManager>();
                 }
                 return _serviceProvider;
             }

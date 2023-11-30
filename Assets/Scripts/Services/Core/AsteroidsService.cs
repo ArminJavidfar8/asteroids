@@ -3,6 +3,7 @@ using Management.Asteroid;
 using Services.Abstraction;
 using Services.PoolSystem.Abstaction;
 using Services.SpriteDatabaseSystem.Abstraction;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -33,9 +34,16 @@ namespace Services.Core
             return _spriteDatabaseService.GetSpriteByName(spriteName);
         }
 
+        public AsteroidType GetRandomAsteroidType()
+        {
+            Array types = Enum.GetValues(typeof(AsteroidType));
+            int randomIndex = UnityEngine.Random.Range(1, types.Length);
+            return (AsteroidType)types.GetValue(randomIndex);
+        }
+
         public void RemoveAsteroid(IAsteroid asteroid)
         {
-            
+            _poolService.ReleaseGameObject(asteroid.TheGameObject);
         }
     }
 }

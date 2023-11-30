@@ -15,5 +15,6 @@ namespace Services.Abstraction
         IAsteroid AddAsteroid(AsteroidType asteroidType);
         void RemoveAsteroid(IAsteroid asteroid);
         Sprite GetRandomAsteroidSprite(AsteroidType asteroidType);
+        AsteroidType GetRandomAsteroidType();
     }
 }
