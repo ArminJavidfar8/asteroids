@@ -32,7 +32,8 @@ namespace Management.AI
                 Vector3 position = Random.insideUnitCircle.normalized * levelSize;
                 position.z = 0;
                 asteroid.SetPosition(position);
-                
+                asteroid.MoveProperly();
+
                 ++createdAsteroids;
                 yield return waitForSeconds;
             }

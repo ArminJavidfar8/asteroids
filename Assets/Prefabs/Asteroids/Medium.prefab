@@ -101,6 +101,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _asteroidData: {fileID: 11400000, guid: 197346ec619607344a4562b1043dc41c, type: 2}
   _spriteRenderer: {fileID: 4257096698742266166}
+  _rigidbody: {fileID: 2821487519310824374}
 --- !u!58 &974156571868288085
 CircleCollider2D:
   m_ObjectHideFlags: 0
