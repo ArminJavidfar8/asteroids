@@ -1,10 +1,8 @@
 using Management.Abstraction;
 using Management.Core;
-using Management.Spaceship;
 using Microsoft.Extensions.DependencyInjection;
 using NUnit.Framework;
 using Services.Abstraction;
-using UnityEngine;
 
 namespace Tests.EditMode.UnitTest
 {

@@ -10,7 +10,7 @@ using UnityEngine;
 
 namespace Management.Asteroid
 {
-    public class Asteroid : MonoBehaviour, IAsteroid
+    public class Asteroid : MonoBehaviour, IAsteroid, IDamageable
     {
         [SerializeField] private AsteroidData _asteroidData;
         [SerializeField] private SpriteRenderer _spriteRenderer;
@@ -20,11 +20,15 @@ namespace Management.Asteroid
         private Transform _transform;
         private Coroutine _rangeCheckCoroutine;
         private int _levelSize;
+        private float _health;
 
         public string Name => _asteroidData.AsteroidType.ToString();
         public IAsteroidData AsteroidData => _asteroidData;
         public GameObject TheGameObject => gameObject;
         public Vector3 Position => _transform.position;
+
+        public float MaxHealth => _asteroidData.MaxHealth;
+        public float Health { get => _health; set => _health = value; }
 
         public void Initialize()
         {
@@ -37,6 +41,7 @@ namespace Management.Asteroid
 
         public void OnGetFromPool()
         {
+            Health = MaxHealth;
             SetSprite();
             if (_rangeCheckCoroutine != null )
             {
@@ -59,9 +64,9 @@ namespace Management.Asteroid
             _rigidbody.AddForce((-transform.position + randomNoise) * _asteroidData.MoveForce);
         }
 
-        public void BreakDown()
+        public void Stop()
         {
-
+            _rigidbody.velocity = Vector2.zero;
         }
 
         private IEnumerator CheckAsteroidRange()
@@ -86,6 +91,22 @@ namespace Management.Asteroid
         public void SetPosition(Vector3 position)
         {
             _transform.position = position;
+        }
+
+        public bool TakeDamage(float damage)
+        {
+            Health -= damage;
+            if (Health <= 0)
+            {
+                Die();
+                return true;
+            }
+            return false;
+        }
+
+        public void Die()
+        {
+            _asteroidsService.RemoveAsteroid(this);
         }
     }
 }

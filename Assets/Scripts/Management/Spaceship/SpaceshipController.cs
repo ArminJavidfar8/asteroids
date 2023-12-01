@@ -14,7 +14,7 @@ namespace Management.Spaceship
         private int _rotationPower;
         private Transform _transform;
 
-        public Vector3 BulletPosition => _weaponPosition.position;
+        public Vector3 WeaponPosition => _weaponPosition.position;
         public Vector3 Up => _transform.up;
 
         public void Initialize()

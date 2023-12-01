@@ -57,7 +57,7 @@ namespace Management.Spaceship
 
         private void UserShot()
         {
-            _weapon.Shoot(_spaceshipController.BulletPosition, _spaceshipController.Up);
+            _weapon.Shoot(_spaceshipController.WeaponPosition, _spaceshipController.Up);
         }
 
     }

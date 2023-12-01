@@ -1,3 +1,4 @@
+using Services.Data.Abstraction;
 using UnityEngine;
 
 namespace Management.Abstraction
@@ -5,6 +6,6 @@ namespace Management.Abstraction
     public interface IBullet
     {
         void SetPosition(Vector3 position);
-        void MoveTo(Vector3 direction);
+        void ShootBullet(IWeaponData weaponData, Vector3 direction);
     }
 }

@@ -12,7 +12,7 @@ namespace Management.Abstraction
         Vector3 Position { get; }
 
         void MoveProperly();
-        void BreakDown();
+        void Stop();
         void SetPosition(Vector3 position);
     }
 }

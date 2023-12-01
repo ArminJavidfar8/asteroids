@@ -1,6 +1,8 @@
 using Management.Abstraction;
 using Services.Abstraction;
 using Services.CoroutineSystem.Abstractio;
+using Services.EventSystem.Abstraction;
+using Services.EventSystem.Extension;
 using System.Collections;
 using UnityEngine;
 
@@ -10,12 +12,33 @@ namespace Management.AI
     {
         private readonly IAsteroidsService _asteroidsService;
         private readonly ILevelService _levelService;
+        private readonly ICoroutineService _coroutineService;
+        private Coroutine _generateAsteroidsRoutine;
 
-        public EnemyManager(IAsteroidsService asteroidsService, ICoroutineService coroutineService, ILevelService levelService)
+        public EnemyManager(IAsteroidsService asteroidsService, ICoroutineService coroutineService, ILevelService levelService, IEventService eventService)
         {
             _asteroidsService = asteroidsService;
             _levelService = levelService;
-            coroutineService.StartCoroutine(GenerateAsteroids());
+            _coroutineService = coroutineService;
+            eventService.RegisterEvent(EventTypes.OnLevelLoaded, LevelLoaded);
+            eventService.RegisterEvent(EventTypes.OnLevelClosed, LevelClosed);
+        }
+
+        private void LevelClosed()
+        {
+            if (_generateAsteroidsRoutine != null)
+            {
+                _coroutineService.StopCoroutine(_generateAsteroidsRoutine);
+            }
+        }
+
+        private void LevelLoaded()
+        {
+            if (_generateAsteroidsRoutine != null)
+            {
+                _coroutineService.StopCoroutine(_generateAsteroidsRoutine);
+            }
+            _generateAsteroidsRoutine = _coroutineService.StartCoroutine(GenerateAsteroids());
         }
 
         private IEnumerator GenerateAsteroids()

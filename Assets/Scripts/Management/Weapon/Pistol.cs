@@ -32,7 +32,7 @@ namespace Management.Weapon
             {
                 IBullet bullet = _poolService.GetGameObject(SimpleBullet.POOL_NAME).GetComponent<IBullet>();
                 bullet.SetPosition(bulletPosition);
-                bullet.MoveTo(direction);
+                bullet.ShootBullet(_weaponData, direction);
                 _lastShootTime = Time.time;
                 return true;
             }
