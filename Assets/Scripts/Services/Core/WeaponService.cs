@@ -30,9 +30,9 @@ namespace Services.Core
             return weapons;
         }
 
-        public IWeapon GetWeapon(WeaponType weaponType) => weaponType switch
+        public IWeapon GetWeapon(WeaponType weaponType, int ownerLayer) => weaponType switch
         {
-            WeaponType.Pistol => new Pistol(),
+            WeaponType.Pistol => new Pistol(ownerLayer),
             WeaponType.None or _ => null,
         };
 

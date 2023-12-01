@@ -1,3 +1,4 @@
+using Common;
 using Management.Abstraction;
 using Management.Common;
 using Management.Core;
@@ -10,6 +11,7 @@ using Services.Data.Abstraction;
 using Services.EventSystem.Abstraction;
 using Services.EventSystem.Extension;
 using Services.PoolSystem.Abstaction;
+using System.Collections;
 using UnityEngine;
 
 namespace Management.Spaceship
@@ -27,6 +29,8 @@ namespace Management.Spaceship
         private IEventService _eventService;
         private ISpaceshipController _spaceshipController;
         private IWeapon _weapon;
+        private Coroutine _shootRoutine;
+        private Transform _transform;
 
         public string Name => POOL_NAME;
 
@@ -38,26 +42,32 @@ namespace Management.Spaceship
             _coroutineService = ServiceHolder.ServiceProvider.GetService<ICoroutineService>();
             _spaceshipController = GetComponent<ISpaceshipController>();
             _spaceshipController.Initialize(_spaceshipData.ForwardMotorPower, _spaceshipData.RotationPower);
+            _transform = transform;
 
-            _weapon = weaponService.GetWeapon(WeaponType.Pistol);
-            _damageable.Setup(this, _spaceshipData.MaxHealth);
+            _weapon = weaponService.GetWeapon(WeaponType.Pistol, LayerMask.NameToLayer(Constants.LayerNames.ENEMY_BULLET));
         }
 
         public void OnGetFromPool()
         {
+            _damageable.Setup(this, _spaceshipData.MaxHealth);
             _spaceshipController.OnGetFromPool();
             _coroutineService.StartDelayedTask(0.5f, MoveProperly);
+            _shootRoutine = _coroutineService.StartCoroutine(ShootRoutine());
         }
 
         public void OnReleaseToPool()
         {
             _spaceshipController.OnReleaseToPool();
+            if (_shootRoutine != null)
+            {
+                _coroutineService.StopCoroutine(_shootRoutine);
+            }
         }
 
         public void MoveProperly()
         {
             Vector3 randomNoise = new Vector3(Random.Range(-2f, 2f), Random.Range(-2f, 2f), 0);
-            Vector3 direction = (-transform.position + randomNoise) * 20f;
+            Vector3 direction = (-_transform.position + randomNoise) * 20f;
             _spaceshipController.Move(direction);
         }
 
@@ -67,5 +77,16 @@ namespace Management.Spaceship
             _eventService.BroadcastEvent(EventTypes.OnEnemyDied, _spaceshipData.KillingScore);
             _spaceshipService.RemoveEnemy(gameObject);
         }
+
+        private IEnumerator ShootRoutine()
+        {
+            while (_damageable.IsAlive)
+            {
+                yield return new WaitForSeconds(1.2f);
+                Vector3 bulletDirection = _spaceshipService.Player.Position.normalized - _transform.position.normalized;
+                _weapon.Shoot(_transform.position, bulletDirection);
+            }
+        }
+
     }
 }

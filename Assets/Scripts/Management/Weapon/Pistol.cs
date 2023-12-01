@@ -15,8 +15,9 @@ namespace Management.Weapon
         private IWeaponService _weaponService;
         private IWeaponData _weaponData;
         private float _lastShootTime;
+        private int _ownerLayer;
 
-        public Pistol()
+        public Pistol(int ownerLayer)
         {
             _poolService = ServiceHolder.ServiceProvider.GetService<IPoolService>();
             _weaponService = ServiceHolder.ServiceProvider.GetService<IWeaponService>();
@@ -24,6 +25,7 @@ namespace Management.Weapon
             _weaponData = _weaponService.GetWeaponData(WeaponType.Pistol);
 
             _lastShootTime = -_weaponData.FireRate; // because player may shoot at the very fist moment of game
+            _ownerLayer = ownerLayer;
         }
 
         public bool Shoot(Vector3 bulletPosition, Vector3 direction)
@@ -31,6 +33,7 @@ namespace Management.Weapon
             if (CheckFireRate())
             {
                 IBullet bullet = _poolService.GetGameObject(SimpleBullet.POOL_NAME).GetComponent<IBullet>();
+                bullet.ChangeLayer(_ownerLayer);
                 bullet.SetPosition(bulletPosition);
                 bullet.ShootBullet(_weaponData, direction);
                 _lastShootTime = Time.time;

@@ -17,7 +17,7 @@ namespace Tests.PlayMode.IntegrationTests
             IWeaponService weaponService = ServiceHolder.ServiceProvider.GetService<IWeaponService>();
             IAsteroidsService asteroidsService = ServiceHolder.ServiceProvider.GetService<IAsteroidsService>();
 
-            IWeapon weapon = weaponService.GetWeapon(WeaponType.Pistol);
+            IWeapon weapon = weaponService.GetWeapon(WeaponType.Pistol, 0);
             IAsteroid asteroid = asteroidsService.AddAsteroid(AsteroidType.Large);
             asteroid.Stop();
             asteroid.SetPosition(Vector2.right * 3);

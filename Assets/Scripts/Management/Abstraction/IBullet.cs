@@ -7,5 +7,6 @@ namespace Management.Abstraction
     {
         void SetPosition(Vector3 position);
         void ShootBullet(IWeaponData weaponData, Vector3 direction);
+        void ChangeLayer(int layer);
     }
 }

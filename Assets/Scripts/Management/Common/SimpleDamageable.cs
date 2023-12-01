@@ -14,7 +14,7 @@ namespace Management.Common
         public void Setup(IDamageableDeathListener damageableDeathListener, float maxHealth)
         {
             _damageableDeathListener = damageableDeathListener;
-            MaxHealth = maxHealth;
+            Health = MaxHealth = maxHealth;
         }
 
         public bool TakeDamage(float damage)

@@ -9,13 +9,13 @@ namespace Services.Abstraction
     public enum WeaponType
     {
         None,
-        Pistol
+        Pistol,
     }
 
     public interface IWeaponService
     {
         IWeaponData[] ReadWeaponsData();
-        IWeapon GetWeapon(WeaponType weaponType);
+        IWeapon GetWeapon(WeaponType weaponType, int ownerLayer);
         IWeaponData GetWeaponData(WeaponType weaponType);
     }
 }

@@ -14,8 +14,8 @@ TagManager:
   - Asteroid
   - PlayerSpaceship
   - EnemySpaceship
-  - 
-  - 
+  - PlayerBullet
+  - EnemyBullet
   - 
   - 
   - 

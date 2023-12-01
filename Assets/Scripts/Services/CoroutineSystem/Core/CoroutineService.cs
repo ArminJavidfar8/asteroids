@@ -27,7 +27,7 @@ namespace Services.CoroutineSystem.Core
 
         public void StartDelayedTask(float delay, Action task)
         {
-            _coroutinesHolder.StartCoroutine(DoDelayedTask(delay, task));
+            StartCoroutine(DoDelayedTask(delay, task));
         }
 
         private IEnumerator DoDelayedTask(float delay, Action task)

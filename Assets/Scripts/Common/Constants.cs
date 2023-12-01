@@ -8,7 +8,8 @@ namespace Common
     {
         public static class LayerNames
         {
-            
+            public const string ENEMY_BULLET = "EnemyBullet";
+            public const string PLAYER_BULLET = "PlayerBullet";
         }
         public static class Tags
         {

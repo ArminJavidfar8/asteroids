@@ -1,3 +1,4 @@
+using Common;
 using Management.Abstraction;
 using Management.Common;
 using Management.Core;
@@ -39,12 +40,12 @@ namespace Management.Spaceship
             _spaceshipController.Initialize(_spaceshipData.ForwardMotorPower, _spaceshipData.RotationPower);
             _transform = transform;
 
-            _weapon = weaponService.GetWeapon(WeaponType.Pistol);
-            _damageable.Setup(this, _spaceshipData.MaxHealth);
+            _weapon = weaponService.GetWeapon(WeaponType.Pistol, LayerMask.NameToLayer(Constants.LayerNames.PLAYER_BULLET));
         }
 
         public void OnGetFromPool()
         {
+            _damageable.Setup(this, _spaceshipData.MaxHealth);
             _eventService.RegisterEvent(EventTypes.OnUserClickedForward, UserClickedForward);
             _eventService.RegisterEvent<Vector2>(EventTypes.OnUserClickedSides, UserClickedSides);
             _eventService.RegisterEvent(EventTypes.OnUserShot, UserShot);

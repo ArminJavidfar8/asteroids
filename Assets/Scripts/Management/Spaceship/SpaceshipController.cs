@@ -20,6 +20,7 @@ namespace Management.Spaceship
 
         public Vector3 WeaponPosition => _weaponPosition.position;
         public Vector3 Up => _transform.up;
+        public Vector3 Position => _transform.position;
 
         public void Initialize(int forwardMotorPower, int rotationPower)
         {

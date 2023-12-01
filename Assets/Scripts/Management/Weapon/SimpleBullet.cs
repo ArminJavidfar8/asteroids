@@ -54,5 +54,10 @@ namespace Management.Weapon
             _weaponData = weaponData;
             _rigidbody.AddForce(direction * BULLET_SPEED);
         }
+
+        public void ChangeLayer(int layer)
+        {
+            gameObject.layer = layer;
+        }
     }
 }
