@@ -12,6 +12,8 @@ namespace Services.EventSystem.Extension
         OnLevelStarted,
         OnLevelFinished,
         OnPlayerDied,
+        OnEnemyDied,
+        OnScoreUpdated,
     }
 
     public static class EventServiceExtension

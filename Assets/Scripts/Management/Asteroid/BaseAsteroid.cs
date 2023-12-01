@@ -5,6 +5,8 @@ using Services.Abstraction;
 using Services.CoroutineSystem.Abstractio;
 using Services.Data;
 using Services.Data.Abstraction;
+using Services.EventSystem.Abstraction;
+using Services.EventSystem.Extension;
 using Services.PoolSystem.Abstaction;
 using Services.PoolSystem.Core;
 using System.Collections;
@@ -18,11 +20,12 @@ namespace Management.Asteroid
         [SerializeField] private SpriteRenderer _spriteRenderer;
         [SerializeField] private Rigidbody2D _rigidbody;
         private ICoroutineService _coroutineService;
+        protected IAsteroidsService _asteroidsService;
+        protected IEventService _eventService;
         private Transform _transform;
         private Coroutine _rangeCheckCoroutine;
         private int _levelSize;
         private float _health;
-        protected IAsteroidsService _asteroidsService;
 
         public string Name => _asteroidData.AsteroidType.ToString();
         public IAsteroidData AsteroidData => _asteroidData;
@@ -40,6 +43,7 @@ namespace Management.Asteroid
             _transform = transform;
             _asteroidsService = ServiceHolder.ServiceProvider.GetService<IAsteroidsService>();
             _coroutineService = ServiceHolder.ServiceProvider.GetService<ICoroutineService>();
+            _eventService = ServiceHolder.ServiceProvider.GetService<IEventService>();
             ILevelService levelService = ServiceHolder.ServiceProvider.GetService<ILevelService>();
             _levelSize = levelService.LevelSize;
         }
@@ -113,6 +117,7 @@ namespace Management.Asteroid
             if (Health <= 0)
             {
                 Die();
+                _eventService.BroadcastEvent(EventTypes.OnEnemyDied, _asteroidData.BreakDownScore);
                 return true;
             }
             return false;
