@@ -1,7 +1,9 @@
 using Services.CoroutineSystem.Abstractio;
 using Services.EventSystem.Abstraction;
+using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Services.CoroutineSystem.Core
 {
@@ -21,6 +23,17 @@ namespace Services.CoroutineSystem.Core
         public void StopCoroutine(Coroutine routine)
         {
             _coroutinesHolder.StopCoroutine(routine);
+        }
+
+        public void StartDelayedTask(float delay, Action task)
+        {
+            _coroutinesHolder.StartCoroutine(DoDelayedTask(delay, task));
+        }
+
+        private IEnumerator DoDelayedTask(float delay, Action task)
+        {
+            yield return new WaitForSeconds(delay);
+            task?.Invoke();
         }
     }
 }

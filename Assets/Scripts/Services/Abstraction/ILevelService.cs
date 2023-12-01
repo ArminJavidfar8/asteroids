@@ -10,5 +10,6 @@ namespace Services.Abstraction
         int TotalAsteroids {  get; }
         int LevelSize {  get; }
         float AsteroidInstantiationRatio {  get; }
+        bool HasEnemySpaceship {  get; }
     }
 }

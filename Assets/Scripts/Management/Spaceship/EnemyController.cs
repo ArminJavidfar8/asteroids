@@ -4,40 +4,40 @@ using Management.Core;
 using Microsoft.Extensions.DependencyInjection;
 using Services.Abstraction;
 using Services.Abstraction.Spaceship;
+using Services.CoroutineSystem.Abstractio;
 using Services.Data;
+using Services.Data.Abstraction;
 using Services.EventSystem.Abstraction;
 using Services.EventSystem.Extension;
 using Services.PoolSystem.Abstaction;
-using System;
-using TMPro;
 using UnityEngine;
 
 namespace Management.Spaceship
 {
     [RequireComponent(typeof(ISpaceshipController))]
-    public class PlayerController : MonoBehaviour, IPoolable, IDamageableDeathListener
+    public class EnemyController : MonoBehaviour, IPoolable, IDamageableDeathListener
     {
-        public const string POOL_NAME = "PlayerSpaceship";
+        public const string POOL_NAME = "EnemySpaceship";
 
         [SerializeField] private SpaceshipData _spaceshipData;
+        [SerializeField] private Rigidbody2D _rigidbody;
         [SerializeField] private SimpleDamageable _damageable;
-
-        private IEventService _eventService;
+        private ICoroutineService _coroutineService;
         private ISpaceshipService _spaceshipService;
+        private IEventService _eventService;
         private ISpaceshipController _spaceshipController;
         private IWeapon _weapon;
-        private Transform _transform;
 
         public string Name => POOL_NAME;
 
         public void Initialize()
         {
             IWeaponService weaponService = ServiceHolder.ServiceProvider.GetService<IWeaponService>();
-            _eventService = ServiceHolder.ServiceProvider.GetService<IEventService>();
             _spaceshipService = ServiceHolder.ServiceProvider.GetService<ISpaceshipService>();
+            _eventService = ServiceHolder.ServiceProvider.GetService<IEventService>();
+            _coroutineService = ServiceHolder.ServiceProvider.GetService<ICoroutineService>();
             _spaceshipController = GetComponent<ISpaceshipController>();
             _spaceshipController.Initialize(_spaceshipData.ForwardMotorPower, _spaceshipData.RotationPower);
-            _transform = transform;
 
             _weapon = weaponService.GetWeapon(WeaponType.Pistol);
             _damageable.Setup(this, _spaceshipData.MaxHealth);
@@ -45,39 +45,27 @@ namespace Management.Spaceship
 
         public void OnGetFromPool()
         {
-            _eventService.RegisterEvent(EventTypes.OnUserClickedForward, UserClickedForward);
-            _eventService.RegisterEvent<Vector2>(EventTypes.OnUserClickedSides, UserClickedSides);
-            _eventService.RegisterEvent(EventTypes.OnUserShot, UserShot);
             _spaceshipController.OnGetFromPool();
+            _coroutineService.StartDelayedTask(0.5f, MoveProperly);
         }
 
         public void OnReleaseToPool()
         {
-            _eventService.UnRegisterEvent(EventTypes.OnUserClickedForward, UserClickedForward);
-            _eventService.UnRegisterEvent<Vector2>(EventTypes.OnUserClickedSides, UserClickedSides);
-            _eventService.UnRegisterEvent(EventTypes.OnUserShot, UserShot);
             _spaceshipController.OnReleaseToPool();
         }
 
-        private void UserClickedForward()
+        public void MoveProperly()
         {
-            _spaceshipController.Move(_transform.up);
-        }
-
-        private void UserClickedSides(Vector2 input)
-        {
-            _spaceshipController.Rotate(input);
-        }
-
-        private void UserShot()
-        {
-            _weapon.Shoot(_spaceshipController.WeaponPosition, _spaceshipController.Up);
+            Vector3 randomNoise = new Vector3(Random.Range(-2f, 2f), Random.Range(-2f, 2f), 0);
+            Vector3 direction = (-transform.position + randomNoise) * 20f;
+            _spaceshipController.Move(direction);
         }
 
         public void OnDamageableDied(IDamageable damageable)
         {
-            _eventService.BroadcastEvent(EventTypes.OnPlayerDied);
-            _spaceshipService.RemovePlayer();
+            _eventService.BroadcastEvent(EventTypes.OnEnemySpaceshipDestoyed);
+            _eventService.BroadcastEvent(EventTypes.OnEnemyDied, _spaceshipData.KillingScore);
+            _spaceshipService.RemoveEnemy(gameObject);
         }
     }
 }

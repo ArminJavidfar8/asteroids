@@ -22,7 +22,7 @@ namespace Tests.PlayMode.UnitTest
 
             ISpaceshipController playerShip = player.GetComponent<SpaceshipController>();
 
-            playerShip.MoveForward();
+            playerShip.Move(Vector3.right);
 
             yield return 0;
 

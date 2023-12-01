@@ -18,6 +18,7 @@ namespace Services.Core
         public int TotalAsteroids => 5; // read this value from a scriptable object 
         public float AsteroidInstantiationRatio => 1; // read this value from a scriptable object 
         public int LevelSize => 6; // read this value from a scriptable object 
+        public bool HasEnemySpaceship => true; // read this value from a scriptable object 
         private int Score { get => _score; 
             set 
             {  
@@ -42,7 +43,5 @@ namespace Services.Core
         {
             Score = 0;
         }
-
-
     }
 }

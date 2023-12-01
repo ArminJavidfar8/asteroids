@@ -90,10 +90,10 @@ namespace Management.Asteroid
         private IEnumerator CheckAsteroidRange()
         {
             WaitForSeconds wait = new WaitForSeconds(0.5f);
-            while (true) // TODO add asteroid health check to condition
+            while (IsAlive)
             {
                 yield return wait;
-                // if the asteroid passed level size, take it back toward center of world
+                // if the asteroid passed level size, take it back
                 if (_transform.position.sqrMagnitude > _levelSize * _levelSize)
                 {
                     MoveProperly();

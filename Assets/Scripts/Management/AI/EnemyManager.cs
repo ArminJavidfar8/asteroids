@@ -1,5 +1,6 @@
 using Management.Abstraction;
 using Services.Abstraction;
+using Services.Abstraction.Spaceship;
 using Services.CoroutineSystem.Abstractio;
 using Services.EventSystem.Abstraction;
 using Services.EventSystem.Extension;
@@ -14,13 +15,16 @@ namespace Management.AI
         private readonly IAsteroidsService _asteroidsService;
         private readonly ILevelService _levelService;
         private readonly ICoroutineService _coroutineService;
+        private readonly ISpaceshipService _spaceshipService;
         private Coroutine _generateAsteroidsRoutine;
+        private bool _enemyCreated;
 
-        public EnemyManager(IAsteroidsService asteroidsService, ICoroutineService coroutineService, ILevelService levelService, IEventService eventService)
+        public EnemyManager(IAsteroidsService asteroidsService, ICoroutineService coroutineService, ILevelService levelService, IEventService eventService, ISpaceshipService spaceshipService)
         {
             _asteroidsService = asteroidsService;
             _levelService = levelService;
             _coroutineService = coroutineService;
+            _spaceshipService = spaceshipService;
             eventService.RegisterEvent(EventTypes.OnLevelStarted, LevelStarted);
             eventService.RegisterEvent(EventTypes.OnLevelFinished, LevelFinished);
         }
@@ -40,6 +44,8 @@ namespace Management.AI
                 _coroutineService.StopCoroutine(_generateAsteroidsRoutine);
             }
             _generateAsteroidsRoutine = _coroutineService.StartCoroutine(GenerateAsteroids());
+
+            _enemyCreated = false;
         }
 
         private IEnumerator GenerateAsteroids()
@@ -59,6 +65,13 @@ namespace Management.AI
                 asteroid.MoveProperly();
 
                 ++createdAsteroids;
+
+                if (_levelService.HasEnemySpaceship && !_enemyCreated && createdAsteroids >= totalAsteroids / 2)
+                {
+                    Vector2 enemyPosition = Random.insideUnitCircle.normalized * levelSize;
+                    _spaceshipService.CreateEnemy(enemyPosition);
+                    _enemyCreated = true;
+                }
                 yield return waitForSeconds;
             }
         }

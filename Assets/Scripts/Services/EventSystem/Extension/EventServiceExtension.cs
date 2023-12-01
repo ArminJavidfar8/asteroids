@@ -14,6 +14,7 @@ namespace Services.EventSystem.Extension
         OnPlayerDied,
         OnEnemyDied,
         OnScoreUpdated,
+        OnEnemySpaceshipDestoyed,
     }
 
     public static class EventServiceExtension

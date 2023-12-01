@@ -8,8 +8,8 @@ namespace Management.Abstraction
         Vector3 Up { get; }
         void OnGetFromPool();
         void OnReleaseToPool();
-        void Initialize();
-        void MoveForward();
+        void Initialize(int forwardMotorPower, int rotationPower);
+        void Move(Vector3 direction);
         void Rotate(Vector2 input);
     }
 }

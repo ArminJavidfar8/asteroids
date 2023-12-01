@@ -1,12 +1,7 @@
 using Management.Abstraction;
 using Management.Core;
 using Management.Weapon;
-using Microsoft.Extensions.DependencyInjection;
 using NUnit.Framework;
-using Services.Abstraction;
-using Services.Data.Abstraction;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace Tests.EditMode.UnitTest
