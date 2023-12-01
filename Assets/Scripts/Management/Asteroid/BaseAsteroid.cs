@@ -6,6 +6,7 @@ using Services.CoroutineSystem.Abstractio;
 using Services.Data;
 using Services.Data.Abstraction;
 using Services.PoolSystem.Abstaction;
+using Services.PoolSystem.Core;
 using System.Collections;
 using UnityEngine;
 
@@ -30,6 +31,7 @@ namespace Management.Asteroid
 
         public float MaxHealth => _asteroidData.MaxHealth;
         public float Health { get => _health; set => _health = value; }
+        public bool IsAlive => Health > 0;
 
         public abstract void Die();
 
@@ -40,6 +42,15 @@ namespace Management.Asteroid
             _coroutineService = ServiceHolder.ServiceProvider.GetService<ICoroutineService>();
             ILevelService levelService = ServiceHolder.ServiceProvider.GetService<ILevelService>();
             _levelSize = levelService.LevelSize;
+        }
+
+        private void OnCollisionEnter2D(Collision2D collision)
+        {
+            if (collision.gameObject.TryGetComponent(out IDamageable damageable))
+            {
+                damageable.TakeDamage(_asteroidData.DamageToPlayer);
+                Die();
+            }
         }
 
         public void OnGetFromPool()

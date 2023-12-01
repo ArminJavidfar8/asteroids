@@ -6,5 +6,6 @@ namespace Services.Abstraction.Spaceship
     {
         ISpaceshipController Player { get; }
         ISpaceshipController CreatePlayer();
+        void RemovePlayer();
     }
 }

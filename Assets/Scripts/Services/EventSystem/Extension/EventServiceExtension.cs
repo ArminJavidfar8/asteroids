@@ -9,8 +9,9 @@ namespace Services.EventSystem.Extension
         OnUserClickedForward,
         OnUserClickedSides,
         OnUserShot,
-        OnLevelLoaded,
-        OnLevelClosed,
+        OnLevelStarted,
+        OnLevelFinished,
+        OnPlayerDied,
     }
 
     public static class EventServiceExtension

@@ -6,6 +6,7 @@ using Services.Abstraction.Spaceship;
 using Services.EventSystem.Abstraction;
 using Services.EventSystem.Extension;
 using Services.PoolSystem.Abstaction;
+using System;
 using UnityEngine;
 
 namespace Management.Level
@@ -23,13 +24,13 @@ namespace Management.Level
 
         private void Start()
         {
-            _eventService.BroadcastEvent(EventTypes.OnLevelLoaded);
-            CreatePlayer();
+            _eventService.RegisterEvent(EventTypes.OnLevelStarted, LevelStarted);
         }
 
-        private void CreatePlayer()
+        private void LevelStarted()
         {
             _spaceshipService.CreatePlayer();
         }
+
     }
 }

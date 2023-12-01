@@ -4,6 +4,8 @@ namespace Management.Abstraction
     {
         float MaxHealth {  get; }
         float Health { get; }
+        bool IsAlive { get; }
+
         /// <summary>
         /// 
         /// </summary>

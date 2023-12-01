@@ -36,6 +36,7 @@ namespace Management.Spaceship
             _eventService.RegisterEvent(EventTypes.OnUserClickedForward, UserClickedForward);
             _eventService.RegisterEvent<Vector2>(EventTypes.OnUserClickedSides, UserClickedSides);
             _eventService.RegisterEvent(EventTypes.OnUserShot, UserShot);
+            _spaceshipController.OnGetFromPool();
         }
 
         public void OnReleaseToPool()
@@ -43,6 +44,7 @@ namespace Management.Spaceship
             _eventService.UnRegisterEvent(EventTypes.OnUserClickedForward, UserClickedForward);
             _eventService.UnRegisterEvent<Vector2>(EventTypes.OnUserClickedSides, UserClickedSides);
             _eventService.UnRegisterEvent(EventTypes.OnUserShot, UserShot);
+            _spaceshipController.OnReleaseToPool();
         }
 
         private void UserClickedForward()
@@ -59,6 +61,5 @@ namespace Management.Spaceship
         {
             _weapon.Shoot(_spaceshipController.WeaponPosition, _spaceshipController.Up);
         }
-
     }
 }
