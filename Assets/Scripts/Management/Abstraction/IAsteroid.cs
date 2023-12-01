@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Management.Abstraction
 {
-    public interface IAsteroid : IPoolable
+    public interface IAsteroid
     {
         IAsteroidData AsteroidData { get; }
         GameObject TheGameObject { get; }

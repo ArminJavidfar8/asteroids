@@ -3,7 +3,6 @@ using Management.Core;
 using Microsoft.Extensions.DependencyInjection;
 using NUnit.Framework;
 using Services.Abstraction;
-using Services.Abstraction.Spaceship;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.TestTools;

@@ -5,22 +5,23 @@ using Services.Abstraction;
 using Services.CoroutineSystem.Abstractio;
 using Services.Data;
 using Services.Data.Abstraction;
+using Services.PoolSystem.Abstaction;
 using System.Collections;
 using UnityEngine;
 
 namespace Management.Asteroid
 {
-    public class Asteroid : MonoBehaviour, IAsteroid, IDamageable
+    public abstract class BaseAsteroid : MonoBehaviour, IAsteroid, IDamageable, IPoolable
     {
         [SerializeField] private AsteroidData _asteroidData;
         [SerializeField] private SpriteRenderer _spriteRenderer;
         [SerializeField] private Rigidbody2D _rigidbody;
-        private IAsteroidsService _asteroidsService;
         private ICoroutineService _coroutineService;
         private Transform _transform;
         private Coroutine _rangeCheckCoroutine;
         private int _levelSize;
         private float _health;
+        protected IAsteroidsService _asteroidsService;
 
         public string Name => _asteroidData.AsteroidType.ToString();
         public IAsteroidData AsteroidData => _asteroidData;
@@ -29,6 +30,8 @@ namespace Management.Asteroid
 
         public float MaxHealth => _asteroidData.MaxHealth;
         public float Health { get => _health; set => _health = value; }
+
+        public abstract void Die();
 
         public void Initialize()
         {
@@ -104,9 +107,5 @@ namespace Management.Asteroid
             return false;
         }
 
-        public void Die()
-        {
-            _asteroidsService.RemoveAsteroid(this);
-        }
     }
 }
