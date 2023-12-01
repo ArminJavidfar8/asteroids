@@ -1,9 +1,8 @@
+using Management.Abstraction;
 using Management.Core;
-using Management.Spaceship;
 using Microsoft.Extensions.DependencyInjection;
 using NUnit.Framework;
-using Services.PoolSystem.Abstaction;
-using UnityEngine;
+using Services.Abstraction.Spaceship;
 
 namespace Tests.EditMode.UnitTest
 {
@@ -12,11 +11,10 @@ namespace Tests.EditMode.UnitTest
         [Test]
         public void TestPlayerInstantiation()
         {
-            IPoolService poolService = ServiceHolder.ServiceProvider.GetService<IPoolService>();
-            poolService.GetGameObject(PlayerController.POOL_NAME);
+            ISpaceshipService spaceshipService = ServiceHolder.ServiceProvider.GetService<ISpaceshipService>();
+            ISpaceshipController player = spaceshipService.CreatePlayer();
 
-            PlayerController playerController = GameObject.FindObjectOfType<PlayerController>();
-            Assert.IsNotNull(playerController);
+            Assert.IsNotNull(player);
         }
 
         [TearDown]

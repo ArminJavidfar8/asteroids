@@ -1,9 +1,11 @@
 using Management.Abstraction;
 using Management.Core;
 using Microsoft.Extensions.DependencyInjection;
+using Services.Abstraction;
 using Services.EventSystem.Abstraction;
 using Services.EventSystem.Extension;
 using Services.PoolSystem.Abstaction;
+using System;
 using UnityEngine;
 
 namespace Management.Spaceship
@@ -15,25 +17,32 @@ namespace Management.Spaceship
 
         private IEventService _eventService;
         private ISpaceshipController _spaceshipController;
+        private IWeapon _weapon;
+
         public string Name => POOL_NAME;
 
         public void Initialize()
         {
+            IWeaponService weaponService = ServiceHolder.ServiceProvider.GetService<IWeaponService>();
             _eventService = ServiceHolder.ServiceProvider.GetService<IEventService>(); // this can be filled with a DI library
             _spaceshipController = GetComponent<ISpaceshipController>();
             _spaceshipController.Initialize();
+
+            _weapon = weaponService.GetWeapon(WeaponType.Pistol);
         }
 
         public void OnGetFromPool()
         {
             _eventService.RegisterEvent(EventTypes.OnUserClickedForward, UserClickedForward);
             _eventService.RegisterEvent<Vector2>(EventTypes.OnUserClickedSides, UserClickedSides);
+            _eventService.RegisterEvent(EventTypes.OnUserShot, UserShot);
         }
 
         public void OnReleaseToPool()
         {
             _eventService.UnRegisterEvent(EventTypes.OnUserClickedForward, UserClickedForward);
             _eventService.UnRegisterEvent<Vector2>(EventTypes.OnUserClickedSides, UserClickedSides);
+            _eventService.UnRegisterEvent(EventTypes.OnUserShot, UserShot);
         }
 
         private void UserClickedForward()
@@ -45,5 +54,11 @@ namespace Management.Spaceship
         {
             _spaceshipController.Rotate(input);
         }
+
+        private void UserShot()
+        {
+            _weapon.Shoot(_spaceshipController.BulletPosition, _spaceshipController.Up);
+        }
+
     }
 }

@@ -8,11 +8,14 @@ namespace Management.Spaceship
     public class SpaceshipController : MonoBehaviour, ISpaceshipController
     {
         [SerializeField] private SpaceshipData _spaceshipData;
+        [SerializeField] private Transform _weaponPosition;
         private Rigidbody2D _rigidbody;
         private int _forwardMotorPower;
         private int _rotationPower;
         private Transform _transform;
 
+        public Vector3 BulletPosition => _weaponPosition.position;
+        public Vector3 Up => _transform.up;
 
         public void Initialize()
         {

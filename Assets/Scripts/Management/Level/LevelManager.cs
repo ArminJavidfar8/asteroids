@@ -2,6 +2,7 @@ using Common;
 using Management.Abstraction;
 using Management.Core;
 using Microsoft.Extensions.DependencyInjection;
+using Services.Abstraction.Spaceship;
 using Services.PoolSystem.Abstaction;
 using UnityEngine;
 
@@ -9,11 +10,11 @@ namespace Management.Level
 {
     public class LevelManager : MonoBehaviour
     {
-        private IPoolService _poolService;
+        private ISpaceshipService _spaceshipService;
 
         private void Awake()
         {
-            _poolService = ServiceHolder.ServiceProvider.GetService<IPoolService>();
+            _spaceshipService = ServiceHolder.ServiceProvider.GetService<ISpaceshipService>();
         }
 
         private void Start()
@@ -23,7 +24,7 @@ namespace Management.Level
 
         private void CreatePlayer()
         {
-            _poolService.GetGameObject(Spaceship.PlayerController.POOL_NAME);
+            _spaceshipService.CreatePlayer();
         }
     }
 }

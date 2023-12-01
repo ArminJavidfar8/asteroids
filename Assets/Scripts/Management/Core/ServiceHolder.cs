@@ -1,6 +1,7 @@
 using Management.AI;
 using Microsoft.Extensions.DependencyInjection;
 using Services.Abstraction;
+using Services.Abstraction.Spaceship;
 using Services.Core;
 using Services.CoroutineSystem.Abstractio;
 using Services.CoroutineSystem.Core;
@@ -31,6 +32,8 @@ namespace Management.Core
                     serviceCollection.AddSingleton<ISpriteDatabaseService, SpriteDatabaseService>();
                     serviceCollection.AddSingleton<ILevelService, LevelService>();
                     serviceCollection.AddSingleton<EnemyManager>();
+                    serviceCollection.AddSingleton<IWeaponService, WeaponService>();
+                    serviceCollection.AddSingleton<ISpaceshipService, SpaceshipService>();
 
                     _serviceProvider = serviceCollection.BuildServiceProvider();
 
@@ -42,6 +45,8 @@ namespace Management.Core
                     _ = _serviceProvider.GetService<ISpriteDatabaseService>();
                     _ = _serviceProvider.GetService<ILevelService>();
                     _ = _serviceProvider.GetService<EnemyManager>();
+                    _ = _serviceProvider.GetService<IWeaponService>();
+                    _ = _serviceProvider.GetService<ISpaceshipService>();
                 }
                 return _serviceProvider;
             }
