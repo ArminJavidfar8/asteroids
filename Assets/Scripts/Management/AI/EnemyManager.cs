@@ -4,6 +4,7 @@ using Services.CoroutineSystem.Abstractio;
 using Services.EventSystem.Abstraction;
 using Services.EventSystem.Extension;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Management.AI
@@ -20,11 +21,11 @@ namespace Management.AI
             _asteroidsService = asteroidsService;
             _levelService = levelService;
             _coroutineService = coroutineService;
-            eventService.RegisterEvent(EventTypes.OnLevelLoaded, LevelLoaded);
-            eventService.RegisterEvent(EventTypes.OnLevelClosed, LevelClosed);
+            eventService.RegisterEvent(EventTypes.OnLevelStarted, LevelStarted);
+            eventService.RegisterEvent(EventTypes.OnLevelFinished, LevelFinished);
         }
 
-        private void LevelClosed()
+        private void LevelFinished()
         {
             if (_generateAsteroidsRoutine != null)
             {
@@ -32,7 +33,7 @@ namespace Management.AI
             }
         }
 
-        private void LevelLoaded()
+        private void LevelStarted()
         {
             if (_generateAsteroidsRoutine != null)
             {

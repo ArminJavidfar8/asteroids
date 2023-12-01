@@ -13,5 +13,6 @@ MonoBehaviour:
   m_Name: Spaceship_01
   m_EditorClassIdentifier: 
   _id: spaceship_01
+  _maxHealth: 1
   _forwardMotorPower: 800
   _rotationPower: 30

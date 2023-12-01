@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Small
   m_EditorClassIdentifier: 
   _asteroidType: 1
+  _damageToPlayer: 10
   _moveForce: 20
   _maxHealth: 10
   _breakDownScore: 100
