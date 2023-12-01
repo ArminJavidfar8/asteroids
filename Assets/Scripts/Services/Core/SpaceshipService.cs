@@ -21,30 +21,44 @@ namespace Services.Core
         {
             _poolService = poolService;
             eventService.RegisterEvent(EventTypes.OnLevelStarted, LevelStarted);
-            eventService.RegisterEvent(EventTypes.OnEnemySpaceshipDestoyed, EnemySpaceshipDestoyed);
+            eventService.RegisterEvent<int>(EventTypes.OnEnemySpaceshipDestoyed, EnemySpaceshipDestoyed);
         }
 
         public ISpaceshipController CreatePlayer()
         {
-            _player = _poolService.GetGameObject(PlayerController.POOL_NAME);
+            if (_player == null)
+            {
+                _player = _poolService.GetGameObject(PlayerController.POOL_NAME);
+            }
             return Player;
         }
 
         public void RemovePlayer()
         {
-            _poolService.ReleaseGameObject(_player);
+            if (_player != null)
+            {
+                _poolService.ReleaseGameObject(_player);
+                _player = null;
+            }
         }
 
         public ISpaceshipController CreateEnemy(Vector3 position)
         {
-            _enemy = _poolService.GetGameObject(EnemyController.POOL_NAME);
-            _enemy.transform.position = position;
+            if (_enemy == null)
+            {
+                _enemy = _poolService.GetGameObject(EnemyController.POOL_NAME);
+                _enemy.transform.position = position;
+            }
             return _enemy.GetComponent<ISpaceshipController>();
         }
 
         public void RemoveEnemy(GameObject enemy)
         {
-            _poolService.ReleaseGameObject(enemy);
+            if (enemy != null)
+            {
+                _poolService.ReleaseGameObject(enemy);
+                _enemy = null;
+            }
         }
 
         private void LevelStarted()
@@ -55,7 +69,7 @@ namespace Services.Core
             }
         }
 
-        private void EnemySpaceshipDestoyed()
+        private void EnemySpaceshipDestoyed(int score)
         {
             _enemy = null;
         }

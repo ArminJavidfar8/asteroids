@@ -9,5 +9,6 @@ namespace Services.CoroutineSystem.Abstractio
         Coroutine StartCoroutine(IEnumerator routine);
         void StopCoroutine(Coroutine routine);
         void StartDelayedTask(float delay, Action task);
+        void DoTaskAtNextFrame(Action checkForWinCondition);
     }
 }

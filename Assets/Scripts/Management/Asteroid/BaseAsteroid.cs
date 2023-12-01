@@ -45,7 +45,7 @@ namespace Management.Asteroid
             _coroutineService = ServiceHolder.ServiceProvider.GetService<ICoroutineService>();
             _eventService = ServiceHolder.ServiceProvider.GetService<IEventService>();
             ILevelService levelService = ServiceHolder.ServiceProvider.GetService<ILevelService>();
-            _levelSize = levelService.LevelSize;
+            _levelSize = levelService.CurrentLevelData.LevelSize;
         }
 
         private void OnCollisionEnter2D(Collision2D collision)
@@ -117,7 +117,7 @@ namespace Management.Asteroid
             if (Health <= 0)
             {
                 Die();
-                _eventService.BroadcastEvent(EventTypes.OnEnemyDied, _asteroidData.BreakDownScore);
+                _eventService.BroadcastEvent(EventTypes.OnAstroidDestroyed, _asteroidData.BreakDownScore);
                 return true;
             }
             return false;

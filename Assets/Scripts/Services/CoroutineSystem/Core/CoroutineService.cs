@@ -27,12 +27,24 @@ namespace Services.CoroutineSystem.Core
 
         public void StartDelayedTask(float delay, Action task)
         {
-            StartCoroutine(DoDelayedTask(delay, task));
+            StartCoroutine(StartDelayedTaskRoutine(delay, task));
         }
 
-        private IEnumerator DoDelayedTask(float delay, Action task)
+        private IEnumerator StartDelayedTaskRoutine(float delay, Action task)
         {
             yield return new WaitForSeconds(delay);
+            task?.Invoke();
+        }
+
+        public void DoTaskAtNextFrame(Action task)
+        {
+            StartCoroutine(DoTaskAtNextFrameRoutine(task));
+            
+        }
+
+        private IEnumerator DoTaskAtNextFrameRoutine(Action task)
+        {
+            yield return null;
             task?.Invoke();
         }
     }

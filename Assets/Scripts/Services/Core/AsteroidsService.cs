@@ -18,6 +18,8 @@ namespace Services.Core
         private readonly ISpriteDatabaseService _spriteDatabaseService;
         private readonly List<IAsteroid> _createdAsteroids;
 
+        public int AsteroidsCount => _createdAsteroids.Count;
+
         public AsteroidsService(IPoolService poolService, ISpriteDatabaseService spriteDatabaseService, IEventService eventService)
         {
             _poolService = poolService;
@@ -36,7 +38,7 @@ namespace Services.Core
 
         public Sprite GetRandomAsteroidSprite(AsteroidType asteroidType)
         {
-            string spriteName = $"{asteroidType.ToString()}Asteroid_{UnityEngine.Random.Range(0, 4)}";
+            string spriteName = $"{asteroidType.ToString()}Asteroid_{UnityEngine.Random.Range(1, 4)}";
             return _spriteDatabaseService.GetSpriteByName(spriteName);
         }
 

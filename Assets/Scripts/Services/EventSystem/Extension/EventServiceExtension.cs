@@ -11,10 +11,10 @@ namespace Services.EventSystem.Extension
         OnUserShot,
         OnLevelStarted,
         OnLevelFinished,
-        OnPlayerDied,
-        OnEnemyDied,
+        OnAstroidDestroyed,
         OnScoreUpdated,
         OnEnemySpaceshipDestoyed,
+        OnDied,
     }
 
     public static class EventServiceExtension

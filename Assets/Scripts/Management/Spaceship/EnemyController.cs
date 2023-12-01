@@ -74,7 +74,7 @@ namespace Management.Spaceship
         public void OnDamageableDied(IDamageable damageable)
         {
             _eventService.BroadcastEvent(EventTypes.OnEnemySpaceshipDestoyed);
-            _eventService.BroadcastEvent(EventTypes.OnEnemyDied, _spaceshipData.KillingScore);
+            _eventService.BroadcastEvent(EventTypes.OnDied, _spaceshipData.KillingScore);
             _spaceshipService.RemoveEnemy(gameObject);
         }
 
@@ -83,7 +83,8 @@ namespace Management.Spaceship
             while (_damageable.IsAlive)
             {
                 yield return new WaitForSeconds(1.2f);
-                Vector3 bulletDirection = _spaceshipService.Player.Position.normalized - _transform.position.normalized;
+                Vector3 randomNoise = new Vector3(Random.Range(-2f, 2f), Random.Range(-2f, 2f), 0);
+                Vector3 bulletDirection = (_spaceshipService.Player.Position - _transform.position + randomNoise).normalized;
                 _weapon.Shoot(_transform.position, bulletDirection);
             }
         }

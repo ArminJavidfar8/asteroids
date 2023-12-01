@@ -19,6 +19,7 @@ namespace Common
         public static class Paths
         {
             public const string WEAPONS = "Weapons";
+            public const string Levels = "Levels";
         }
     }
 }

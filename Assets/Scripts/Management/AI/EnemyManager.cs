@@ -2,6 +2,7 @@ using Management.Abstraction;
 using Services.Abstraction;
 using Services.Abstraction.Spaceship;
 using Services.CoroutineSystem.Abstractio;
+using Services.Data.Abstraction;
 using Services.EventSystem.Abstraction;
 using Services.EventSystem.Extension;
 using System.Collections;
@@ -26,10 +27,10 @@ namespace Management.AI
             _coroutineService = coroutineService;
             _spaceshipService = spaceshipService;
             eventService.RegisterEvent(EventTypes.OnLevelStarted, LevelStarted);
-            eventService.RegisterEvent(EventTypes.OnLevelFinished, LevelFinished);
+            eventService.RegisterEvent<bool>(EventTypes.OnLevelFinished, LevelFinished);
         }
 
-        private void LevelFinished()
+        private void LevelFinished(bool won)
         {
             if (_generateAsteroidsRoutine != null)
             {
@@ -50,14 +51,15 @@ namespace Management.AI
 
         private IEnumerator GenerateAsteroids()
         {
-            int totalAsteroids = _levelService.TotalAsteroids;
-            int levelSize = _levelService.LevelSize;
-            WaitForSeconds waitForSeconds = new WaitForSeconds(_levelService.AsteroidInstantiationRatio);
+            ILevelData currentLevelData = _levelService.CurrentLevelData;
+            List<AsteroidType> astroids = GetAstroidTypesList(currentLevelData);
+            
+            int levelSize = _levelService.CurrentLevelData.LevelSize;
+            WaitForSeconds waitForSeconds = new WaitForSeconds(_levelService.CurrentLevelData.AsteroidInstantiationRatio);
             int createdAsteroids = 0;
-            while (createdAsteroids < totalAsteroids)
+            for (int i = 0; i < astroids.Count; i++)
             {
-                AsteroidType randomType = _asteroidsService.GetRandomAsteroidType();
-                IAsteroid asteroid = _asteroidsService.AddAsteroid(randomType);
+                IAsteroid asteroid = _asteroidsService.AddAsteroid(astroids[i]);
 
                 Vector3 position = Random.insideUnitCircle.normalized * levelSize;
                 position.z = 0;
@@ -66,7 +68,7 @@ namespace Management.AI
 
                 ++createdAsteroids;
 
-                if (_levelService.HasEnemySpaceship && !_enemyCreated && createdAsteroids >= totalAsteroids / 2)
+                if (_levelService.CurrentLevelData.HasEnemySpaceship && !_enemyCreated && createdAsteroids >= astroids.Count / 2)
                 {
                     Vector2 enemyPosition = Random.insideUnitCircle.normalized * levelSize;
                     _spaceshipService.CreateEnemy(enemyPosition);
@@ -74,6 +76,24 @@ namespace Management.AI
                 }
                 yield return waitForSeconds;
             }
+        }
+
+        private List<AsteroidType> GetAstroidTypesList(ILevelData currentLevelData)
+        {
+            List<AsteroidType> astroids = new List<AsteroidType>();
+            for (int i = 0; i < currentLevelData.LargeAsteroids; i++)
+            {
+                astroids.Add(AsteroidType.Large);
+            }
+            for (int i = 0; i < currentLevelData.MediumAsteroids; i++)
+            {
+                astroids.Add(AsteroidType.Medium);
+            }
+            for (int i = 0; i < currentLevelData.SmallAsteroids; i++)
+            {
+                astroids.Add(AsteroidType.Small);
+            }
+            return astroids;
         }
     }
 }

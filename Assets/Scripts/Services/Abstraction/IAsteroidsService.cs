@@ -12,6 +12,7 @@ namespace Services.Abstraction
     }
     public interface IAsteroidsService
     {
+        int AsteroidsCount { get; }
         IAsteroid AddAsteroid(AsteroidType asteroidType);
         void RemoveAsteroid(IAsteroid asteroid);
         Sprite GetRandomAsteroidSprite(AsteroidType asteroidType);

@@ -77,7 +77,7 @@ namespace Management.Spaceship
 
         public void OnDamageableDied(IDamageable damageable)
         {
-            _eventService.BroadcastEvent(EventTypes.OnPlayerDied);
+             _eventService.BroadcastEvent(EventTypes.OnLevelFinished, false);
             _spaceshipService.RemovePlayer();
         }
     }

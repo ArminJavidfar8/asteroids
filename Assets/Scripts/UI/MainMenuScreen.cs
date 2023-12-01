@@ -1,5 +1,6 @@
 using Management.Core;
 using Microsoft.Extensions.DependencyInjection;
+using Services.Abstraction;
 using Services.EventSystem.Abstraction;
 using Services.EventSystem.Extension;
 using System;
@@ -17,30 +18,28 @@ namespace UI
         [SerializeField] private GameObject _menuPanel;
         [SerializeField] private Button _playButton;
         [SerializeField] private TMP_Text _scoreLabel;
+        [SerializeField] private TMP_Text _levelLabel;
+        [SerializeField] private GameObject _wonObject;
+        [SerializeField] private GameObject _loseObject;
         private IEventService _eventService;
+        private ILevelService _levelService;
 
         private void Awake()
         {
             _eventService = ServiceHolder.ServiceProvider.GetService<IEventService>();
+            _levelService = ServiceHolder.ServiceProvider.GetService<ILevelService>();
         }
 
         private void Start()
         {
             SetButtonsListener();
-            _eventService.RegisterEvent(EventTypes.OnPlayerDied, PlayerDied);
             _eventService.RegisterEvent<int>(EventTypes.OnScoreUpdated, ScoreUpdated);
+            _eventService.RegisterEvent<bool>(EventTypes.OnLevelFinished, LevelFinished);
         }
 
         private void ScoreUpdated(int score)
         {
             _scoreLabel.text = score.ToString();
-        }
-
-        private void PlayerDied()
-        {
-            Time.timeScale = 0;
-            _menuPanel.SetActive(true);
-            _eventService.BroadcastEvent(EventTypes.OnLevelFinished);
         }
 
         private void SetButtonsListener()
@@ -55,5 +54,15 @@ namespace UI
             _eventService.BroadcastEvent(EventTypes.OnLevelStarted);
             _menuPanel.SetActive(false);
         }
+
+        private void LevelFinished(bool won)
+        {
+            _menuPanel.SetActive(true);
+            _wonObject.SetActive(won);
+            _loseObject.SetActive(!won);
+            _levelLabel.text = $"Level {_levelService.CurrentLevelNumber}";
+            Time.timeScale = 0;
+        }
+
     }
 }
