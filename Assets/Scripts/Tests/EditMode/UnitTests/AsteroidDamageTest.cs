@@ -1,10 +1,9 @@
 using Management.Abstraction;
+using Management.Asteroid;
 using Management.Core;
 using Microsoft.Extensions.DependencyInjection;
 using NUnit.Framework;
 using Services.Abstraction;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace Tests.EditMode.UnitTest
@@ -24,14 +23,64 @@ namespace Tests.EditMode.UnitTest
             Assert.IsFalse(isDead);
             Assert.AreEqual(beforeDamageHealth - 5, largeAsteroid.Health);
 
-            isDead = largeAsteroid.TakeDamage(200);
+            float dieNeededDamage = largeAsteroid.Health;
+            isDead = largeAsteroid.TakeDamage(dieNeededDamage);
             Assert.IsTrue(isDead);
+        }
+        
+        [Test]
+        public void TestLargeAsteroidBreakDown()
+        {
+            IAsteroidsService asteroidsService = ServiceHolder.ServiceProvider.GetService<IAsteroidsService>();
+            IDamageable largeAsteroid = asteroidsService.AddAsteroid(AsteroidType.Large) as IDamageable;
+
+            float dieNeededDamage = largeAsteroid.Health;
+            largeAsteroid.TakeDamage(dieNeededDamage);
+
+            MediumAsteroid[] mediumAsteroids = GameObject.FindObjectsOfType<MediumAsteroid>();
+            Assert.IsTrue(mediumAsteroids.Length > 0);
+        }
+        
+        [Test]
+        public void TestMediumAsteroidBreakDown()
+        {
+            IAsteroidsService asteroidsService = ServiceHolder.ServiceProvider.GetService<IAsteroidsService>();
+            IDamageable mediumAsteroid = asteroidsService.AddAsteroid(AsteroidType.Medium) as IDamageable;
+
+            float dieNeededDamage = mediumAsteroid.Health;
+            mediumAsteroid.TakeDamage(dieNeededDamage);
+
+            SmallAsteroid[] smallAsteroids = GameObject.FindObjectsOfType<SmallAsteroid>();
+            Assert.IsTrue(smallAsteroids.Length > 0);
+        }
+        
+        [Test]
+        public void TestSmallAsteroidBreakDown()
+        {
+            IAsteroidsService asteroidsService = ServiceHolder.ServiceProvider.GetService<IAsteroidsService>();
+            IDamageable smallAsteroid = asteroidsService.AddAsteroid(AsteroidType.Small) as IDamageable;
+
+            float dieNeededDamage = smallAsteroid.Health;
+            smallAsteroid.TakeDamage(dieNeededDamage);
+
+            SmallAsteroid[] smallAsteroids = GameObject.FindObjectsOfType<SmallAsteroid>();
+            Assert.IsTrue(smallAsteroids.Length == 0);
         }
 
         [TearDown]
         public void Cleanup()
         {
+            DeleteAllObjects();
             ServiceHolder.Dispose();
+        }
+
+        private void DeleteAllObjects()
+        {
+            foreach (GameObject o in Object.FindObjectsOfType<GameObject>())
+            {
+                GameObject.DestroyImmediate(o);
+            }
+
         }
     }
 }
