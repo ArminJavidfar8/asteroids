@@ -81,6 +81,7 @@ namespace Management.Asteroid
         {
             Vector3 randomNoise = Utility.GetRandomVector2(-2, 2);
             _rigidbody.AddForce((-transform.position + randomNoise) * _asteroidData.MoveForce);
+            _rigidbody.AddTorque(Random.Range(-10, 10));
         }
 
         public void Stop()

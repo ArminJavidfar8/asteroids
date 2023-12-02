@@ -6,7 +6,7 @@ using Services.Abstraction.Spaceship;
 
 namespace Tests.EditMode.UnitTest
 {
-    public class PlayerEditModeTest
+    public class PlayerTest
     {
         [Test]
         public void TestPlayerInstantiation()

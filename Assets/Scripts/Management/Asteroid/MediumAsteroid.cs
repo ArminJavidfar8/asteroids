@@ -13,8 +13,8 @@ namespace Management.Asteroid
                 asteroid.Stop();
                 asteroid.SetPosition(Position);
                 asteroid.MoveProperly();
-                _asteroidsService.RemoveAsteroid(this);
             }
+            _asteroidsService.RemoveAsteroid(this);
         }
     }
 }
