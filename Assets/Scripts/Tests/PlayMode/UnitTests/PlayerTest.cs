@@ -10,7 +10,7 @@ using UnityEngine.TestTools;
 
 namespace Tests.PlayMode.UnitTest
 {
-    public class PlayerPlayModeTest
+    public class PlayerTest
     {
         [UnityTest]
         public IEnumerator TestPlayerMovement()
@@ -42,7 +42,6 @@ namespace Tests.PlayMode.UnitTest
             playerShip.Rotate(Vector2.right);
 
             yield return new WaitForSeconds(0.2f);
-            Debug.Log(player.transform.rotation.eulerAngles.z);
             Assert.AreNotEqual(player.transform.rotation.eulerAngles.z, beforeRotatingRotation);
         }
 

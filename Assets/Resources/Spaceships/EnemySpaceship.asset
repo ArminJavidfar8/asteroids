@@ -16,3 +16,4 @@ MonoBehaviour:
   _maxHealth: 1
   _forwardMotorPower: 500
   _rotationPower: 30
+  _killingScore: 300

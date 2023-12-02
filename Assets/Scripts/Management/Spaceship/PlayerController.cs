@@ -42,7 +42,7 @@ namespace Management.Spaceship
 
             _spaceshipController.Initialize(_spaceshipData.ForwardMotorPower, _spaceshipData.RotationPower);
             _weapon = weaponService.GetWeapon(WeaponType.Pistol, LayerMask.NameToLayer(Constants.LayerNames.PLAYER_BULLET));
-            _halfscreenWorldSize = Camera.main.ScreenToWorldPoint(new(Screen.width, Screen.height));
+            CalculateScreenWorldSize();
         }
 
         private void LateUpdate()
@@ -89,6 +89,14 @@ namespace Management.Spaceship
         {
              _eventService.BroadcastEvent(EventTypes.OnLevelFinished, false);
             _spaceshipService.RemovePlayer();
+        }
+
+        private void CalculateScreenWorldSize()
+        {
+            if (Camera.main != null)
+            {
+                _halfscreenWorldSize = Camera.main.ScreenToWorldPoint(new(Screen.width, Screen.height));
+            }
         }
 
         private void CheckOutOfScreen()

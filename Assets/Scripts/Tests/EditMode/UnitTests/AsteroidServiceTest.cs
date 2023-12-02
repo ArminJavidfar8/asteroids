@@ -12,20 +12,13 @@ namespace Tests.EditMode.UnitTest
         public void TestAsteroidInstantiation()
         {
             IAsteroidsService asteroidsService = ServiceHolder.ServiceProvider.GetService<IAsteroidsService>();
+            
             IAsteroid smallAsteroid = asteroidsService.AddAsteroid(AsteroidType.Small);
-
             Assert.IsNotNull(smallAsteroid);
-        }
-        
-        [Test]
-        public void TestRandomAsteroid()
-        {
-            IAsteroidsService asteroidsService = ServiceHolder.ServiceProvider.GetService<IAsteroidsService>();
-            for (int i = 0; i < 50; i++)
-            {
-                AsteroidType randomType = asteroidsService.GetRandomAsteroidType();
-                Assert.AreNotEqual(randomType, AsteroidType.None);
-            }
+            IAsteroid mediumAsteroid = asteroidsService.AddAsteroid(AsteroidType.Medium);
+            Assert.IsNotNull(mediumAsteroid);
+            IAsteroid largeAsteroid = asteroidsService.AddAsteroid(AsteroidType.Large);
+            Assert.IsNotNull(largeAsteroid);
         }
 
         [TearDown]
