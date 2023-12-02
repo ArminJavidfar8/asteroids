@@ -15,4 +15,4 @@ MonoBehaviour:
   _name: Pistol
   _weaponType: 1
   _damage: 10
-  _fireRate: 0.3
+  _fireRate: 0.2

@@ -25,9 +25,9 @@ namespace Services.CoroutineSystem.Core
             _coroutinesHolder.StopCoroutine(routine);
         }
 
-        public void StartDelayedTask(float delay, Action task)
+        public Coroutine StartDelayedTask(float delay, Action task)
         {
-            StartCoroutine(StartDelayedTaskRoutine(delay, task));
+            return StartCoroutine(StartDelayedTaskRoutine(delay, task));
         }
 
         private IEnumerator StartDelayedTaskRoutine(float delay, Action task)

@@ -18,6 +18,7 @@ namespace Management.Weapon
         private IWeaponData _weaponData;
         private IPoolService _poolService;
         private ICoroutineService _coroutineService;
+        private Coroutine _releasingToPoolRoutine;
 
         public string Name => POOL_NAME;
 
@@ -40,12 +41,19 @@ namespace Management.Weapon
         public void OnGetFromPool()
         {
             _rigidbody.velocity = Vector3.zero;
-            _coroutineService.StartDelayedTask(3, () => { if (gameObject.activeSelf) _poolService.ReleaseGameObject(gameObject); }); // after 5 seconds, it's too far and can get back to pool
+            if (_releasingToPoolRoutine != null)
+            {
+                _coroutineService.StopCoroutine(_releasingToPoolRoutine);
+            }
+            _releasingToPoolRoutine = _coroutineService.StartDelayedTask(3, () => { if (gameObject.activeSelf) _poolService.ReleaseGameObject(gameObject); }); // after 5 seconds, it's too far and can get back to pool
         }
 
         public void OnReleaseToPool()
         {
-
+            if (_releasingToPoolRoutine != null)
+            {
+                _coroutineService.StopCoroutine(_releasingToPoolRoutine);
+            }
         }
 
         public void SetPosition(Vector3 position)
