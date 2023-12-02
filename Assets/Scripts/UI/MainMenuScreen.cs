@@ -16,6 +16,7 @@ namespace UI
     public class MainMenuScreen : MonoBehaviour
     {
         [SerializeField] private GameObject _menuPanel;
+        [SerializeField] private GameObject _inputsPanel;
         [SerializeField] private Button _playButton;
         [SerializeField] private TMP_Text _scoreLabel;
         [SerializeField] private TMP_Text _levelLabel;
@@ -53,11 +54,13 @@ namespace UI
             Time.timeScale = 1;
             _eventService.BroadcastEvent(EventTypes.OnLevelStarted);
             _menuPanel.SetActive(false);
+            _inputsPanel.SetActive(true);
         }
 
         private void LevelFinished(bool won)
         {
             _menuPanel.SetActive(true);
+            _inputsPanel.SetActive(false);
             _wonObject.SetActive(won);
             _loseObject.SetActive(!won);
             _levelLabel.text = $"Level {_levelService.CurrentLevelNumber}";

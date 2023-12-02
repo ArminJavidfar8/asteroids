@@ -30,7 +30,7 @@ namespace Management.UserInput
             {
                 _eventService.BroadcastEvent(EventTypes.OnUserClickedSides, Vector2.right);
             }
-            if (Keyboard.current.spaceKey.wasPressedThisFrame)
+            if (Keyboard.current.spaceKey.isPressed)
             {
                 _eventService.BroadcastEvent(EventTypes.OnUserShot);
             }
