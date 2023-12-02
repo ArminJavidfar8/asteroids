@@ -1,4 +1,5 @@
 using Common;
+using Common.Extensions;
 using Management.Abstraction;
 using Management.Common;
 using Management.Core;
@@ -66,7 +67,7 @@ namespace Management.Spaceship
 
         public void MoveProperly()
         {
-            Vector3 randomNoise = new Vector3(Random.Range(-2f, 2f), Random.Range(-2f, 2f), 0);
+            Vector3 randomNoise = Utility.GetRandomVector2(-2, 2);
             Vector3 direction = (-_transform.position + randomNoise) * 20f;
             _spaceshipController.Move(direction);
         }
@@ -83,7 +84,7 @@ namespace Management.Spaceship
             while (_damageable.IsAlive)
             {
                 yield return new WaitForSeconds(1.2f);
-                Vector3 randomNoise = new Vector3(Random.Range(-2f, 2f), Random.Range(-2f, 2f), 0);
+                Vector3 randomNoise = Utility.GetRandomVector2(-2, 2);
                 Vector3 bulletDirection = (_spaceshipService.Player.Position - _transform.position + randomNoise).normalized;
                 _weapon.Shoot(_transform.position, bulletDirection);
             }

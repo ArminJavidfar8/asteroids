@@ -1,3 +1,4 @@
+using Common.Extensions;
 using Management.Abstraction;
 using Management.Core;
 using Microsoft.Extensions.DependencyInjection;
@@ -78,7 +79,7 @@ namespace Management.Asteroid
 
         public void MoveProperly()
         {
-            Vector3 randomNoise = new Vector3(Random.Range(-2f, 2f), Random.Range(-2f, 2f), 0);
+            Vector3 randomNoise = Utility.GetRandomVector2(-2, 2);
             _rigidbody.AddForce((-transform.position + randomNoise) * _asteroidData.MoveForce);
         }
 
