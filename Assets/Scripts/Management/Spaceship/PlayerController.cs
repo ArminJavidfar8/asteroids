@@ -28,6 +28,7 @@ namespace Management.Spaceship
         private ISpaceshipController _spaceshipController;
         private IWeapon _weapon;
         private Transform _transform;
+        private Vector2 _halfscreenWorldSize;
 
         public string Name => POOL_NAME;
 
@@ -37,10 +38,19 @@ namespace Management.Spaceship
             _eventService = ServiceHolder.ServiceProvider.GetService<IEventService>();
             _spaceshipService = ServiceHolder.ServiceProvider.GetService<ISpaceshipService>();
             _spaceshipController = GetComponent<ISpaceshipController>();
-            _spaceshipController.Initialize(_spaceshipData.ForwardMotorPower, _spaceshipData.RotationPower);
             _transform = transform;
 
+            _spaceshipController.Initialize(_spaceshipData.ForwardMotorPower, _spaceshipData.RotationPower);
             _weapon = weaponService.GetWeapon(WeaponType.Pistol, LayerMask.NameToLayer(Constants.LayerNames.PLAYER_BULLET));
+            _halfscreenWorldSize = Camera.main.ScreenToWorldPoint(new(Screen.width, Screen.height));
+        }
+
+        private void LateUpdate()
+        {
+            if(_damageable.IsAlive)
+            {
+                CheckOutOfScreen();
+            }
         }
 
         public void OnGetFromPool()
@@ -79,6 +89,27 @@ namespace Management.Spaceship
         {
              _eventService.BroadcastEvent(EventTypes.OnLevelFinished, false);
             _spaceshipService.RemovePlayer();
+        }
+
+        private void CheckOutOfScreen()
+        {
+            Vector3 position = _transform.position;
+            if (position.x > _halfscreenWorldSize.x)
+            {
+                _transform.position = new Vector3(-_halfscreenWorldSize.x, position.y);
+            }
+            else if (position.x < -_halfscreenWorldSize.x)
+            {
+                _transform.position = new Vector3(_halfscreenWorldSize.x, position.y);
+            }
+            if (position.y > _halfscreenWorldSize.y)
+            {
+                _transform.position = new Vector3(position.x, -_halfscreenWorldSize.y);
+            }
+            else if (position.y < -_halfscreenWorldSize.y)
+            {
+                _transform.position = new Vector3(position.x, _halfscreenWorldSize.y);
+            }
         }
     }
 }
