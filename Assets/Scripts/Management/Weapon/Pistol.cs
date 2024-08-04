@@ -17,10 +17,10 @@ namespace Management.Weapon
         private float _lastShootTime;
         private int _ownerLayer;
 
-        public Pistol(int ownerLayer)
+        public Pistol(IPoolService poolService, IWeaponService weaponService, int ownerLayer)
         {
-            _poolService = ServiceHolder.ServiceProvider.GetService<IPoolService>();
-            _weaponService = ServiceHolder.ServiceProvider.GetService<IWeaponService>();
+            _poolService = poolService;
+            _weaponService = weaponService;
 
             _weaponData = _weaponService.GetWeaponData(WeaponType.Pistol);
 

@@ -3,6 +3,7 @@ using Management.Abstraction;
 using Management.Weapon;
 using Services.Abstraction;
 using Services.Data.Abstraction;
+using Services.PoolSystem.Abstaction;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -13,8 +14,11 @@ namespace Services.Core
     public class WeaponService : IWeaponService
     {
         private IWeaponData[] _weapons;
-        public WeaponService()
+        private IPoolService _poolService;
+
+        public WeaponService(IPoolService poolService)
         {
+            _poolService = poolService;
             _weapons = ReadWeaponsData();
         }
 
@@ -32,7 +36,7 @@ namespace Services.Core
 
         public IWeapon GetWeapon(WeaponType weaponType, int ownerLayer) => weaponType switch
         {
-            WeaponType.Pistol => new Pistol(ownerLayer),
+            WeaponType.Pistol => new Pistol(_poolService, this, ownerLayer),
             WeaponType.None or _ => null,
         };
 

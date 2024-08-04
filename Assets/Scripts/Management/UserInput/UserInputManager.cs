@@ -1,22 +1,22 @@
-using Management.Core;
-using Microsoft.Extensions.DependencyInjection;
 using Services.EventSystem.Abstraction;
 using Services.EventSystem.Extension;
+using Services.UpdateService.Abstraction;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 namespace Management.UserInput
 {
-    public class UserInputManager : MonoBehaviour
+    public class UserInputManager
     {
         private IEventService _eventService;
 
-        private void Start()
+        public UserInputManager(IEventService eventService, IUpdateService updateService)
         {
-            _eventService = ServiceHolder.ServiceProvider.GetService<IEventService>();
+            _eventService = eventService;
+            updateService.RegisterUpdate(OnUpdate);
         }
 
-        private void Update()
+        private void OnUpdate()
         {
             if (Keyboard.current.wKey.IsPressed())
             {

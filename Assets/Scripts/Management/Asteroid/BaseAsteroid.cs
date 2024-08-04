@@ -9,7 +9,7 @@ using Services.Data.Abstraction;
 using Services.EventSystem.Abstraction;
 using Services.EventSystem.Extension;
 using Services.PoolSystem.Abstaction;
-using Services.PoolSystem.Core;
+using System;
 using System.Collections;
 using UnityEngine;
 
@@ -39,13 +39,15 @@ namespace Management.Asteroid
 
         public abstract void Die();
 
-        public void Initialize()
+        public void Initialize(IServiceProvider serviceProvider)
         {
+            _asteroidsService = serviceProvider.GetService<IAsteroidsService>();
+
             _transform = transform;
-            _asteroidsService = ServiceHolder.ServiceProvider.GetService<IAsteroidsService>();
-            _coroutineService = ServiceHolder.ServiceProvider.GetService<ICoroutineService>();
-            _eventService = ServiceHolder.ServiceProvider.GetService<IEventService>();
-            ILevelService levelService = ServiceHolder.ServiceProvider.GetService<ILevelService>();
+            _asteroidsService = serviceProvider.GetService<IAsteroidsService>();
+            _coroutineService = serviceProvider.GetService<ICoroutineService>();
+            _eventService = serviceProvider.GetService<IEventService>();
+            ILevelService levelService = serviceProvider.GetService<ILevelService>();
             _levelSize = levelService.CurrentLevelData.LevelSize;
         }
 
@@ -81,7 +83,7 @@ namespace Management.Asteroid
         {
             Vector3 randomNoise = Utility.GetRandomVector2(-2, 2);
             _rigidbody.AddForce((-transform.position + randomNoise) * _asteroidData.MoveForce);
-            _rigidbody.AddTorque(Random.Range(-10, 10));
+            _rigidbody.AddTorque(UnityEngine.Random.Range(-10, 10));
         }
 
         public void Stop()

@@ -1,6 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+using System;
 
 namespace Services.PoolSystem.Abstaction
 {
@@ -10,7 +8,11 @@ namespace Services.PoolSystem.Abstaction
         /// Name of the prefab.
         /// </summary>
         string Name { get; }
-        void Initialize();
+        /// <summary>
+        /// This is called only on the first time the GameObject is created
+        /// </summary>
+        /// <param name="serviceProvider"></param>
+        void Initialize(IServiceProvider serviceProvider);
         /// <summary>
         /// This is called everytime a game object is got from pool.
         /// </summary>

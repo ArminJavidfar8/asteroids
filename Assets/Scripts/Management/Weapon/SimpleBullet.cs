@@ -4,6 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Services.CoroutineSystem.Abstractio;
 using Services.Data.Abstraction;
 using Services.PoolSystem.Abstaction;
+using System;
 using UnityEngine;
 
 namespace Management.Weapon
@@ -22,11 +23,11 @@ namespace Management.Weapon
 
         public string Name => POOL_NAME;
 
-        public void Initialize()
+        public void Initialize(IServiceProvider serviceProvider)
         {
             _transform = transform;
-            _poolService = ServiceHolder.ServiceProvider.GetService<IPoolService>();
-            _coroutineService = ServiceHolder.ServiceProvider.GetService<ICoroutineService>();
+            _poolService = serviceProvider.GetService<IPoolService>();
+            _coroutineService = serviceProvider.GetService<ICoroutineService>();
         }
 
         private void OnCollisionEnter2D(Collision2D collision)

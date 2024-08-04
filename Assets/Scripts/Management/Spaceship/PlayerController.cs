@@ -32,11 +32,11 @@ namespace Management.Spaceship
 
         public string Name => POOL_NAME;
 
-        public void Initialize()
+        public void Initialize(IServiceProvider serviceProvider)
         {
-            IWeaponService weaponService = ServiceHolder.ServiceProvider.GetService<IWeaponService>();
-            _eventService = ServiceHolder.ServiceProvider.GetService<IEventService>();
-            _spaceshipService = ServiceHolder.ServiceProvider.GetService<ISpaceshipService>();
+            IWeaponService weaponService = serviceProvider.GetService<IWeaponService>();
+            _eventService = serviceProvider.GetService<IEventService>();
+            _spaceshipService = serviceProvider.GetService<ISpaceshipService>();
             _spaceshipController = GetComponent<ISpaceshipController>();
             _transform = transform;
 

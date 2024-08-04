@@ -12,6 +12,7 @@ using Services.Data.Abstraction;
 using Services.EventSystem.Abstraction;
 using Services.EventSystem.Extension;
 using Services.PoolSystem.Abstaction;
+using System;
 using System.Collections;
 using UnityEngine;
 
@@ -35,12 +36,12 @@ namespace Management.Spaceship
 
         public string Name => POOL_NAME;
 
-        public void Initialize()
+        public void Initialize(IServiceProvider serviceProvider)
         {
-            IWeaponService weaponService = ServiceHolder.ServiceProvider.GetService<IWeaponService>();
-            _spaceshipService = ServiceHolder.ServiceProvider.GetService<ISpaceshipService>();
-            _eventService = ServiceHolder.ServiceProvider.GetService<IEventService>();
-            _coroutineService = ServiceHolder.ServiceProvider.GetService<ICoroutineService>();
+            IWeaponService weaponService = serviceProvider.GetService<IWeaponService>();
+            _spaceshipService = serviceProvider.GetService<ISpaceshipService>();
+            _eventService = serviceProvider.GetService<IEventService>();
+            _coroutineService = serviceProvider.GetService<ICoroutineService>();
             _spaceshipController = GetComponent<ISpaceshipController>();
             _spaceshipController.Initialize(_spaceshipData.ForwardMotorPower, _spaceshipData.RotationPower);
             _transform = transform;

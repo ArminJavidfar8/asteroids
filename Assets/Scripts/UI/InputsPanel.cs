@@ -2,11 +2,12 @@ using Management.Core;
 using Microsoft.Extensions.DependencyInjection;
 using Services.EventSystem.Abstraction;
 using Services.EventSystem.Extension;
+using System;
 using UnityEngine;
 
 namespace UI
 {
-    public class InputsPanel : MonoBehaviour
+    public class InputsPanel : IInitializableMono
     {
         [SerializeField] private ClickAndHoldButton _leftButton;
         [SerializeField] private ClickAndHoldButton _rightButton;
@@ -14,9 +15,9 @@ namespace UI
         [SerializeField] private ClickAndHoldButton _shootButton;
         private IEventService _eventService;
 
-        private void Awake()
+        public override void OnInitialized(IServiceProvider serviceProvider)
         {
-            _eventService = ServiceHolder.ServiceProvider.GetService<IEventService>();
+            _eventService = serviceProvider.GetService<IEventService>();
         }
 
         private void Start()

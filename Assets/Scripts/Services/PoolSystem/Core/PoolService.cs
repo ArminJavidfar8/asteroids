@@ -11,10 +11,12 @@ namespace Services.PoolSystem.Core
     {
         private Dictionary<string, GameObject> _prefabs;
         private List<GameObject> _poolList;
+        private IServiceProvider _serviceProvider;
 
         [Preserve]
-        public PoolService()
+        public PoolService(IServiceProvider serviceProvider)
         {
+            _serviceProvider = serviceProvider;
             _prefabs = new Dictionary<string, GameObject>();
             _poolList = new List<GameObject>();
             FillPrefabs();
@@ -49,7 +51,7 @@ namespace Services.PoolSystem.Core
                 _poolList.Add(gameObject);
                 gameObject.SetActive(true);
                 IPoolable poolable = gameObject.GetComponent<IPoolable>();
-                poolable.Initialize();
+                poolable.Initialize(_serviceProvider);
                 poolable.OnGetFromPool();
                 return gameObject;
             }

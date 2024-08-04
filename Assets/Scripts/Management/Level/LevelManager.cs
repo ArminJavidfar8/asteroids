@@ -1,29 +1,19 @@
-using Common;
-using Management.Abstraction;
-using Management.Core;
-using Microsoft.Extensions.DependencyInjection;
 using Services.Abstraction.Spaceship;
 using Services.EventSystem.Abstraction;
 using Services.EventSystem.Extension;
-using Services.PoolSystem.Abstaction;
-using System;
-using UnityEngine;
 
 namespace Management.Level
 {
-    public class LevelManager : MonoBehaviour
+    public class LevelManager
     {
         private ISpaceshipService _spaceshipService;
         private IEventService _eventService;
 
-        private void Awake()
+        public LevelManager(ISpaceshipService spaceshipService, IEventService eventService )
         {
-            _spaceshipService = ServiceHolder.ServiceProvider.GetService<ISpaceshipService>();
-            _eventService = ServiceHolder.ServiceProvider.GetService<IEventService>();
-        }
+            _spaceshipService = spaceshipService;
+            _eventService = eventService;
 
-        private void Start()
-        {
             _eventService.RegisterEvent(EventTypes.OnLevelStarted, LevelStarted);
         }
 
@@ -31,6 +21,5 @@ namespace Management.Level
         {
             _spaceshipService.CreatePlayer();
         }
-
     }
 }

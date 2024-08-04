@@ -13,7 +13,7 @@ using UnityEngine.UI;
 
 namespace UI
 {
-    public class MainMenuScreen : MonoBehaviour
+    public class MainMenuScreen : IInitializableMono
     {
         [SerializeField] private GameObject _menuPanel;
         [SerializeField] private GameObject _inputsPanel;
@@ -25,10 +25,10 @@ namespace UI
         private IEventService _eventService;
         private ILevelService _levelService;
 
-        private void Awake()
+        public override void OnInitialized(IServiceProvider serviceProvider)
         {
-            _eventService = ServiceHolder.ServiceProvider.GetService<IEventService>();
-            _levelService = ServiceHolder.ServiceProvider.GetService<ILevelService>();
+            _eventService = serviceProvider.GetService<IEventService>();
+            _levelService = serviceProvider.GetService<ILevelService>();
         }
 
         private void Start()
